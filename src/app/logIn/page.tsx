@@ -4,8 +4,8 @@ import { ChevronLeft } from "lucide-react";
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-
-export default function Home() {
+import Categories from "../AdminHome/(foodMenu)/_components/Categories";
+const LogIn = ({}) => {
   const Router = useRouter();
   const [formData, setFormData] = useState({
     email: "",
@@ -20,9 +20,10 @@ export default function Home() {
       );
       const { token } = response.data;
       localStorage.setItem("token", token);
-      console.log("Login success", response);
-      if (response.data.user.role !== "ADMIN") {
-        return alert("netreh erhgui bn");
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+      console.log("Login success", response.data);
+      if (response.data.role === "ADMIN") {
+        await Router.push("/admin");
       } else {
         await Router.push("/AdminHome");
       }
@@ -31,6 +32,7 @@ export default function Home() {
       alert("aldaaaaaaaaa");
     }
   };
+
   return (
     <div className="w-screen h-screen flex items-center">
       <div className="flex flex-col bg-white w-[35%] h-[30%] space-y-4 p-4 justify-center m-auto">
@@ -75,4 +77,5 @@ export default function Home() {
       </div>
     </div>
   );
-}
+};
+export default LogIn;
